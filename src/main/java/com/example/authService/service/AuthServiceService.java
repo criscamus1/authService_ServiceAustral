@@ -13,10 +13,15 @@ public class AuthServiceService {
 @Autowired
 private AuthServiceRepository repository;
 
+//public authService iniciarSesion(String user,String password){
+
+//}
+
+
 public List <authService >obtenerAuthService(){
     return repository.obtenerAuthService();
 }
-public authService buscaAuthService(int id){
+public authService buscaAuthService( int id){
     return repository.buscarAuthServiceId(id);
 }
 public authService guardar(authService authServ){

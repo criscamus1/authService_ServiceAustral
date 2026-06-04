@@ -23,7 +23,7 @@ public List<authService>obtenerAuthService(){
     return service.obtenerAuthService();
 }
 @GetMapping("/{id}")
-public authService buscarAuthService(int id){
+public authService buscarAuthService(@PathVariable int id){
     return service.buscaAuthService(id);
 }
 @PostMapping
@@ -35,8 +35,9 @@ public authService actualizarAuthService(@RequestBody authService authServ){
     return service.actualizarAuthService(authServ);
 }
 @DeleteMapping("/{id}")
-public void eliminarAuthService(@PathVariable int id){
+public String eliminarAuthService(@PathVariable int id){
     service.eliminar(id);
+    return "El empleado ya no trabaja aca, sera eliminad@";
 }
 
 

@@ -22,25 +22,26 @@ public authService buscarAuthServiceId(int id){
     }
     return null;
 }
-public authService actualizar(authService authServ){
-    int id=0;
-    int idPosicion=0;
-
-    for(int i=0;i<listaAuthService.size();i++){
-        if(listaAuthService.get(i).getId()==authServ.getId()){
-            id=authServ.getId();
-            idPosicion=1;
+public authService buscarUserName(String username){
+    for(authService authServ:listaAuthService){
+        if(authServ.getUsername().equals(username)){
+            return authServ;
         }
     }
-    authService authServ1=new authService();
-    authServ1.setId(id);
-    authServ1.setUsername(authServ1.getUsername());
-    authServ1.setPassword(authServ1.getPassword());
-    authServ1.setRol(authServ1.getRol());
-    authServ1.setEstado(authServ1.getEstado());
-    listaAuthService.set(idPosicion, authServ1);
-    return authServ1;
+    return null;
 }
+
+public authService actualizar(authService authServ){
+    for(int i = 0; i < listaAuthService.size(); i++){
+        if(listaAuthService.get(i).getId() == authServ.getId()){
+            listaAuthService.set(i, authServ);
+             return authServ;
+        }
+    }
+    return null;
+}
+
+
 public authService guardar(authService authServ){
     listaAuthService.add(authServ);
         return authServ;
@@ -51,5 +52,4 @@ public void eliminar(int id){
         listaAuthService.remove(authServ);
     }
 }
-
 }
