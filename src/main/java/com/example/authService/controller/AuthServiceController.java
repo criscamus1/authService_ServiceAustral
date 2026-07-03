@@ -1,49 +1,53 @@
 package com.example.authService.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import com.example.authService.dto.CreateAuthRequest;
+import com.example.authService.dto.sesionDTO;
 import com.example.authService.model.authService;
 import com.example.authService.service.AuthServiceService;
-import com.example.dto.sesionDTO;
 
 import jakarta.validation.Valid;
 
-import  org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-
-
-
-
-
 @RestController
-@RequestMapping("/authService")
+@RequestMapping("/api/v1/auth")
 public class AuthServiceController {
-@Autowired
-  private AuthServiceService service;
-@GetMapping
- public List<authService> obtenerAuthService() {
-  return service.obtenerAuthService();
-}
-//@PostMapping("/ingresar")
- //public authService login(@Valid @RequestBody sesionDTO dto) {  no supe seguir con esto 
-  //return service.iniciarSesion(dto.username(), dto.password());
-//}
-@GetMapping("/{id}")
- public authService buscarAuthService(@PathVariable int id) {
-  return service.buscaAuthService(id);
-}
-@PostMapping
- public authService guardarAuthService(@RequestBody authService authServ) {
-  return service.guardar(authServ);
-}
-@PutMapping
- public authService actualizarAuthService(@RequestBody authService authServ) {
-  return service.actualizarAuthService(authServ);
-}
-@DeleteMapping("/{id}")
- public String eliminarAuthService(@PathVariable int id) {
-  return service.eliminar(id);
-}
-
-
+      private final AuthServiceService service;
+      public AuthServiceController(AuthServiceService service) {
+          this.service = service;
+        }
+        @GetMapping
+      public ResponseEntity<List<authService>> listarUsuarios() {
+          List<authService> usuarios = service.getAllRecursos();
+          return ResponseEntity.ok(usuarios);
+        }
+        @PostMapping
+      public ResponseEntity<authService> guardarUsuario(@Valid @RequestBody CreateAuthRequest dto) {
+            authService nuevoUsuario = service.guardarUsuario(dto);
+              return ResponseEntity.status(HttpStatus.CREATED).body(nuevoUsuario);
+        }
+        @GetMapping("{id}")
+        public ResponseEntity<authService> buscarUsuario(@PathVariable int id) {
+            authService usuario = service.buscarUsuario(id);
+              return ResponseEntity.ok(usuario);
+        }
+        @PutMapping("{id}")
+        public ResponseEntity<authService> actualizarUsuario(@PathVariable int id, 
+        @Valid @RequestBody CreateAuthRequest dto) {
+            authService usuarioActualizado = service.actualizarUsuario(id, dto);
+              return ResponseEntity.ok(usuarioActualizado);
+        }
+        @DeleteMapping("{id}")
+        public ResponseEntity<Void> eliminarUsuario(@PathVariable int id) {
+            service.eliminarUsuario(id);
+             return ResponseEntity.noContent().build(); 
+        }
+        @PostMapping("/login")
+        public ResponseEntity<authService> login(@Valid @RequestBody sesionDTO dto) {
+            authService usuarioAutenticado = service.login(dto);
+              return ResponseEntity.ok(usuarioAutenticado);
+        }
 }
